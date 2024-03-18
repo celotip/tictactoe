@@ -46,7 +46,7 @@ const GameController = (function() {
     }
 
 
-    return { player1, player2, playTurn};
+    return { player1, player2, playTurn, getActivePlayer };
 })();
 
 function updateBoard(board) {
@@ -103,6 +103,15 @@ function checkFull(board) {
     return true;
 }
 
+function showTurn() {
+    let player = GameController.getActivePlayer();
+    if (player === 1) {
+        return `${GameController.player1.name}'s turn`;
+    } else {
+        return `${GameController.player2.name}'s turn`;
+    }
+}
+
 const boxes = document.querySelectorAll(".box");
 const board = document.querySelector(".container");
 const notification = document.querySelector("#notification");
@@ -118,11 +127,11 @@ form.addEventListener("submit", (e) => {
     GameController.player2 = createPlayer(secondPlayerName.value, false);
     form.innerHTML = "";
     game.style.visibility = "visible";
+    notification.innerHTML = showTurn();
 })
 
-
 restart.addEventListener("click", () => {
-    notification.style.visibility = "hidden";
+    notification.innerHTML = showTurn();
     GameBoard.board = [[null, null, null], [null, null, null], [null, null, null]];
     boxes.forEach((box) => {
         box.innerHTML = "";
@@ -134,17 +143,15 @@ restart.addEventListener("click", () => {
 board.addEventListener("click", (event) => {
     GameController.playTurn([event.target.dataset.row,event.target.dataset.column]);
     updateBoard(GameBoard.board);
+    notification.innerHTML = showTurn();
     if (checkWin(GameBoard.board, "X")) {
         notification.innerHTML = `${GameController.player1.name} wins!`;
-        notification.style.visibility = "visible";
         board.style.pointerEvents = 'none';
     } else if (checkWin(GameBoard.board, "O")) {
         notification.innerHTML = `${GameController.player2.name} wins!`;
-        notification.style.visibility = "visible";
         board.style.pointerEvents = 'none';
     } else if (checkFull(GameBoard.board)) {
         notification.innerHTML = "It's a tie!";
-        notification.style.visibility = "visible";
         board.style.pointerEvents = 'none';
     }
 })
