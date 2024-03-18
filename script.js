@@ -153,7 +153,6 @@ board.addEventListener("click", (event) => {
     } else if (checkFull(GameBoard.board)) {
         notification.innerHTML = "It's a tie!";
         board.style.pointerEvents = 'none';
-        GameController.switchTurn();
     }
 })
 
