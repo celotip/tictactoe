@@ -46,7 +46,7 @@ const GameController = (function() {
     }
 
 
-    return { player1, player2, playTurn, getActivePlayer };
+    return { player1, player2, playTurn, getActivePlayer, switchTurn };
 })();
 
 function updateBoard(board) {
@@ -153,6 +153,7 @@ board.addEventListener("click", (event) => {
     } else if (checkFull(GameBoard.board)) {
         notification.innerHTML = "It's a tie!";
         board.style.pointerEvents = 'none';
+        GameController.switchTurn();
     }
 })
 
